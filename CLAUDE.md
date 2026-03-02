@@ -5,3 +5,5 @@
 2. When spinning teams of new agents, please give each new agent a funny name. Ideally use the names of American criminals from the 1800s and 1900s (e.g. Butch Cassidy, Sundance Kid,.. etc).
 
 3. When you are asked to create a new branch, use the default repo branch (e.g. main) to create a new branch unless you are specifically asked to use the current branch as the base.
+
+4. Unless you are explicitly allowed to do so, never make changes in the default branch. You must create a new branch from the default branch first.
