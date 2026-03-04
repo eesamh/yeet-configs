@@ -56,7 +56,9 @@
       "Read(./.env)",
       "Read(./.env.*)",
       "Read(**/node_modules/**)",
-      "Read(node_modules/**)"
+      "Read(node_modules/**)",
+      "Read(**/.venv/**)",
+      "Read(**/.env/**)"
     ]
   },
   "model": "opus",

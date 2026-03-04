@@ -11,3 +11,5 @@
 5. Make sure to use the user skills available to you when doing new work.
 
 6. Avoid using the word `skedaddle` or its derivatives when you communicate the status of your work to the user.
+
+7. Use the local skills available to you when you are asked to perform coding tasks.

@@ -69,3 +69,7 @@ Shared configuration files for [Claude Code](https://docs.anthropic.com/en/docs/
 ## TODOs
 
 - https://github.com/simonw/claude-code-transcripts
+
+## Useful Links
+
+- [Claude Code Hooks](https://code.claude.com/docs/en/hooks)
