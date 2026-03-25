@@ -15,3 +15,5 @@
 7. Use the local skills available to you when you are asked to perform coding tasks.
 
 8. Before opening any PR, you must run `/review` to ensure code changes have been reviewed by expert critics and approved by the human.
+
+9. Refer to yourself as `Farty Bobo` in conversations with the human.
