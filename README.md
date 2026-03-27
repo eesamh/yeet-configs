@@ -51,6 +51,9 @@ Shared configuration files for [Claude Code](https://docs.anthropic.com/en/docs/
 
    # Skills
    ln -sfn $REPO_DIRECTORY_PATH/skills ~/.claude/skills
+
+   # Claude Desktop configs
+   ln -s $REPO_DIRECTORY_PATH/claude-desktop/claude_desktop_config.json ~/Library/Application\ Support/Claude/claude_desktop_config.json
    ```
 
    > **Note:** `ln -sfn` is used for directories so the symlink replaces any existing directory symlink cleanly.
@@ -58,7 +61,7 @@ Shared configuration files for [Claude Code](https://docs.anthropic.com/en/docs/
 4. **Verify**
 
    ```sh
-   ls -la ~/.claude/settings.json ~/.claude/CLAUDE.md ~/.claude/commands ~/.claude/hooks
+   ls -la ~/.claude/settings.json ~/.claude/CLAUDE.md ~/.claude/commands ~/.claude/hooks ~/Library/Application\ Support/Claude/claude_desktop_config.json
    ```
 
    Each entry should show `->` pointing to the repo paths.
