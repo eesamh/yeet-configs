@@ -1,11 +1,29 @@
 {
   "mcpServers": {
+    "dbt": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["dbt-mcp"],
+      "env": {
+        "DBT_PROJECT_DIR": "${DBT_PROJECT_DIR}",
+        "DBT_PATH": "${DBT_PATH}",
+        "DB_NAME": "${DB_NAME}",
+        "HOST": "${HOST}",
+        "RW_ETL_USER_NAME": "${RW_ETL_USER_NAME}",
+        "RW_ETL_USER_PASSWORD": "${RW_ETL_USER_PASSWORD}",
+        "DB_PORT": "${DB_PORT}",
+        "ENV": "${ENV}",
+        "DEV_INITIALS": "${DEV_INITIALS}",
+        "AWS_ACCOUNT_ID": "${AWS_ACCOUNT_ID}"
+      }
+    },
     "awslabs.redshift-mcp-server": {
+      "type": "stdio",
       "command": "uvx",
       "args": ["awslabs.redshift-mcp-server@0.0.19"],
       "env": {
         "AWS_PROFILE": "${AWS_PROFILE}",
-        "AWS_DEFAULT_REGION": "${AWS_REGION}",
+        "AWS_REGION": "${AWS_REGION}",
         "FASTMCP_LOG_LEVEL": "INFO"
       }
     }

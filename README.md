@@ -7,6 +7,7 @@ Shared configuration files for [Claude Code](https://docs.anthropic.com/en/docs/
 ```
 ├── CLAUDE.md            # Project-level instructions
 ├── settings.json        # Claude Code settings (model, hooks, permissions, etc.)
+├── .mcp.json            # MCP server configuration
 ├── commands/
 │   └── statusline-command.sh
 ├── hooks/
@@ -35,7 +36,7 @@ Shared configuration files for [Claude Code](https://docs.anthropic.com/en/docs/
    ```sh
 
    # Adjust to fit your local setup
-   export REPO_DIRECTORY_PATH=~/software_projects/claude-configs
+   export REPO_DIRECTORY_PATH=~/dev/claude-configs
 
    # Settings
    ln -sf "$REPO_DIRECTORY_PATH/settings.json" ~/.claude/settings.json
@@ -63,6 +64,9 @@ Shared configuration files for [Claude Code](https://docs.anthropic.com/en/docs/
    # MCP server version pins
    ln -sf "$REPO_DIRECTORY_PATH/claude-desktop/mcp-versions.env" ~/.claude/mcp-versions.env
 
+   # MCP server configuration
+   ln -sf "$REPO_DIRECTORY_PATH/.mcp.json" ~/.claude/.mcp.json
+
    # MCP wrapper scripts
    # -sfn for directories (replaces existing directory symlink cleanly)
    ln -sfn "$REPO_DIRECTORY_PATH/claude-desktop/scripts" ~/.claude/scripts
@@ -74,7 +78,7 @@ Shared configuration files for [Claude Code](https://docs.anthropic.com/en/docs/
 4. **Verify**
 
    ```sh
-   ls -la ~/.claude/settings.json ~/.claude/CLAUDE.md ~/.claude/commands ~/.claude/hooks ~/Library/Application\ Support/Claude/claude_desktop_config.json
+   ls -la ~/.claude/settings.json ~/.claude/CLAUDE.md ~/.claude/.mcp.json ~/.claude/commands ~/.claude/hooks ~/Library/Application\ Support/Claude/claude_desktop_config.json
    ```
 
    Each entry should show `->` pointing to the repo paths.
