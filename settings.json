@@ -81,6 +81,7 @@
   "alwaysThinkingEnabled": true,
   "effortLevel": "low",
   "voiceEnabled": true,
+  "skipAutoPermissionPrompt": true,
   "skills": {
     "langfuse": {
       "type": "command",
@@ -90,6 +91,5 @@
   "feedbackSurveyState": {
     "lastShownTime": 1754572875128
   },
-  "knownMarketplaces": [],
-  "skipAutoPermissionPrompt": true
+  "knownMarketplaces": []
 }

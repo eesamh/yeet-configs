@@ -1,12 +1,12 @@
 ---
-name: review-software
+
+## name: review-software
 description: Used to run githooks, perform code review with expert critics, and commit/push verified changes
 disable-model-invocation: false
----
 
 # Code Review Skill
 
-1. Ask the caller to select the repos that should be used to review the code changes:
+1. Either detect the repos affected from the context OR ask the human to select the repos that should be used to review the code changes:
 
 - current directory
 - a list of repos in the file system
@@ -25,3 +25,4 @@ disable-model-invocation: false
 
 5. Prepare, summarize the changes in the changed files. Always prefix commits with [{ticket-id}]: {summary of change}. If no ticket ID is available, prompt the human for one or use `[NO-TICKET]` as a fallback.
 6. Commit and push. If the push fails due to pre-push hook errors, prompt the human for approval before using `git push --no-verify`.
+
