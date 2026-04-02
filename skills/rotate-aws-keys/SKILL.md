@@ -43,6 +43,17 @@ When the user asks to rotate their AWS keys:
    bash rotate-aws-keys.sh dev
    ```
 
+## Prerequisites
+
+The generated script requires the following tools to be installed on the user's machine:
+
+- `aws` CLI (v2 recommended)
+- `jq` — used to parse the `create-access-key` JSON response
+
+If `jq` is missing, tell the user to install it before running the script:
+- macOS: `brew install jq`
+- Linux: `apt install jq` or `yum install jq`
+
 ## Important notes
 
 - **Never run the rotation script yourself.** The credentials file lives on the user's local machine, not in Claude's sandbox. Always hand the script to the user.

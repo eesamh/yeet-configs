@@ -21,6 +21,13 @@
 set -euo pipefail
 export AWS_PAGER=""
 
+# ─── Prerequisites ────────────────────────────────────────────
+if ! command -v jq &> /dev/null; then
+  echo "  ERROR: jq is required but not installed."
+  echo "  Install it: brew install jq  (macOS) or apt install jq  (Linux)"
+  exit 1
+fi
+
 IAM_USER="${IAM_USER:-}"
 PROFILE="${1:-default}"
 CREDS_FILE="${AWS_SHARED_CREDENTIALS_FILE:-$HOME/.aws/credentials}"
@@ -62,13 +69,17 @@ AWS_PROFILE="$PROFILE" aws sts get-caller-identity --no-cli-pager || {
 echo ""
 
 # ─── Pre-flight: check two-key limit ─────────────────────────
-echo "  Checking active key count for $IAM_USER..."
+echo "  Checking key count for $IAM_USER..."
 ACTIVE_KEY_COUNT=$(AWS_PROFILE="$PROFILE" aws iam list-access-keys \
   --user-name "$IAM_USER" \
-  --query 'AccessKeyMetadata[?Status==`Active`] | length(@)' \
+  --query 'length(AccessKeyMetadata)' \
   --output text --no-cli-pager)
+if ! [[ "$ACTIVE_KEY_COUNT" =~ ^[0-9]+$ ]]; then
+  echo "  ERROR: Failed to retrieve key count for $IAM_USER (got: $ACTIVE_KEY_COUNT)."
+  exit 1
+fi
 if [ "$ACTIVE_KEY_COUNT" -ge 2 ]; then
-  echo "  ERROR: $IAM_USER already has 2 active keys — AWS does not allow a third."
+  echo "  ERROR: $IAM_USER already has 2 keys (active or inactive) — AWS does not allow a third."
   echo "  Delete an existing key first:"
   echo "    aws iam list-access-keys --user-name $IAM_USER"
   exit 1
@@ -85,16 +96,20 @@ echo ""
 
 # ─── Step 3: Create a new access key ─────────────────────────
 echo "[3/6] Creating new access key..."
-NEW_ACCESS_KEY_ID=$(AWS_PROFILE="$PROFILE" aws iam create-access-key \
+NEW_KEY_JSON=$(AWS_PROFILE="$PROFILE" aws iam create-access-key \
   --user-name "$IAM_USER" \
-  --query 'AccessKey.AccessKeyId' \
-  --output text \
+  --output json \
   --no-cli-pager)
-NEW_SECRET_ACCESS_KEY=$(AWS_PROFILE="$PROFILE" aws iam create-access-key \
-  --user-name "$IAM_USER" \
-  --query 'AccessKey.SecretAccessKey' \
-  --output text \
-  --no-cli-pager)
+NEW_ACCESS_KEY_ID=$(echo "$NEW_KEY_JSON" | jq -r '.AccessKey.AccessKeyId')
+NEW_SECRET_ACCESS_KEY=$(echo "$NEW_KEY_JSON" | jq -r '.AccessKey.SecretAccessKey')
+if [ -z "$NEW_ACCESS_KEY_ID" ] || [ "$NEW_ACCESS_KEY_ID" = "null" ]; then
+  echo "  ERROR: Failed to parse new Access Key ID from AWS response."
+  exit 1
+fi
+if [ -z "$NEW_SECRET_ACCESS_KEY" ] || [ "$NEW_SECRET_ACCESS_KEY" = "null" ]; then
+  echo "  ERROR: Failed to parse new Secret Access Key from AWS response."
+  exit 1
+fi
 echo "  New Access Key ID: $NEW_ACCESS_KEY_ID"
 echo ""
 
