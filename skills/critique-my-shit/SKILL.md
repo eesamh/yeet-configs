@@ -26,4 +26,5 @@ disable-model-invocation: false
 - Implement revisions. Use the original agent(s) to implement changes.
 
 5. Prepare, summarize the changes in the changed files. Always prefix commits with [{ticket-id}]: {summary of change}. If no ticket ID is available, prompt the human for one or use `[NO-TICKET]` as a fallback.
+   - Do not stage temporary review or planning files (e.g. `review-*.md`, `plan-*.md`). Delete them after the review is complete. Permanent project docs (`README.md`, `SKILL.md`, `AGENTS.md`, etc.) should still be committed when changed.
 6. Commit and push. If the push fails due to pre-push hook errors, prompt the human for approval before using `git push --no-verify`.
