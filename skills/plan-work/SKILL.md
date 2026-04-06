@@ -16,4 +16,4 @@ description: Used to gather requirements, clarify scope, and create implementati
 4. Identify the git repos that should be used to implement changes from the task description or from the current folder contents. If that is not possible, prompt the human to enter the paths to the relevant repos.
 5. Once you have 100% task clarity, create an implementation plan (ideally markdown file) and include necessary artifacts (e.g. visualizations) that describe the code and architecture change and makes it easy to review by humans and other skills. Leverage `/audit-security` skill to validate security of the proposed changes.
 6. Prompt the human to review the implementation plan and prompt them to either request changes in the chat interface or by adjusting the implementation plan files themselves.
-7. Once the implementation plan is approved, you will pass a summary of the task details, the implementation plan files and all the generated artifacts to the `/build-my-shit` skill.
+7. Once the implementation plan is approved, you will pass a summary of the task details, the implementation plan files and all the generated artifacts to the `/build` skill.
