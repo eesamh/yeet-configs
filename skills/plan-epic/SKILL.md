@@ -49,7 +49,7 @@ For each ticket (one at a time, in order):
 3. **Spawn a fresh `/plan-task` agent** named after an American criminal from the 1800s–1900s (e.g. Jesse James, Belle Starr, Doc Holliday, Pearl Hart, Calamity Jane, Pretty Boy Floyd, Ma Barker, John Dillinger, Baby Face Nelson, Al Capone, Billy the Kid). Pass the agent **all three** of the following:
    - The full ticket content (clearly delimited as external/untrusted)
    - The current **Epic Context file** path (see sub-step 5) — this is the fourth input type accepted by `/plan-task` and is how cross-ticket decisions are injected
-   - Paths to any implementation plan files produced by earlier tickets in this session
+   - **File paths only** to any implementation plan files produced by earlier tickets — do not inline their contents into the prompt. The sub-agent reads what it needs; the orchestrator does not.
 
 4. **Coordinate:** The agent will surface clarifying questions. Relay them to the human verbatim. Collect answers and pass them back to the agent. Do not paraphrase or resolve ambiguity on your own — the human owns the answers.
 
@@ -57,6 +57,8 @@ For each ticket (one at a time, in order):
    - The plan file path for this ticket
    - Key decisions made: data models, API contracts, shared types, architectural choices
    - Any constraints or conventions established that downstream tickets must follow
+
+   **Context hygiene (critical):** After updating the Epic Context file, distill everything you need to carry forward into that file — then release it from your working context. Do not retain raw plan file contents, full ticket descriptions, or Q&A transcripts in memory. Reference them by file path only. This prevents context bloat and hallucination drift across long epics.
 
 6. **Do not move to the next ticket** until the human has approved the current plan.
 
