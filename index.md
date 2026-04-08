@@ -286,49 +286,46 @@ title: Farty Bobo
   /* ── MOBILE ── */
   @media (max-width: 800px) {
     .fb-hero {
-      flex-direction: row;
-      align-items: stretch;
+      flex-direction: column;
+      align-items: flex-start;
       min-height: 100svh;
       padding-bottom: 0;
+      position: relative;
     }
 
-    /* mascot stays absolute, anchored bottom-right, LARGE */
-    .fb-mascot-wrap {
-      position: absolute;
-      right: -8vw; bottom: 0; top: auto;
-      width: 78vw;
-      height: auto;
-      display: flex; align-items: flex-end;
-      justify-content: flex-end;
-      padding: 0;
-    }
-
-    .fb-mascot {
-      height: auto;
-      width: 100%;
-      filter:
-        drop-shadow(-10px 0 50px rgba(127,119,221,0.7))
-        drop-shadow(0 0 30px rgba(127,119,221,0.4));
-    }
-
-    /* text on top, left-aligned, takes ~65% width so it sits left of mascot */
+    /* text full-width at top, gradient fades into mascot below */
     .fb-left {
       position: relative; z-index: 3;
-      max-width: 68vw;
-      width: 68vw;
-      padding: 52px 5vw 40px;
-      display: flex; flex-direction: column; gap: 0;
-      align-self: flex-start;
-      /* subtle fade-right so text stays readable over mascot glow */
-      background: linear-gradient(to right, rgba(13,11,30,0.85) 60%, transparent 100%);
+      width: 100%; max-width: 100%;
+      padding: 48px 6vw 32px;
+      background: linear-gradient(to bottom, rgba(13,11,30,1) 65%, transparent 100%);
     }
 
     .fb-tagline {
-      font-size: clamp(2.8rem, 13vw, 5rem);
+      font-size: clamp(3rem, 14vw, 5.5rem);
       margin-bottom: 20px;
     }
 
-    .fb-desc { font-size: 0.82rem; max-width: 100%; line-height: 1.7; }
+    .fb-desc { font-size: 0.88rem; max-width: 100%; line-height: 1.75; }
+
+    /* mascot centered, LARGE, anchored to bottom — fills the viewport width */
+    .fb-mascot-wrap {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 92vw;
+      height: auto;
+      display: flex; align-items: flex-end; justify-content: center;
+      z-index: 1;
+    }
+
+    .fb-mascot {
+      width: 100%; height: auto;
+      filter:
+        drop-shadow(0 -20px 60px rgba(127,119,221,0.85))
+        drop-shadow(0 0 40px rgba(127,119,221,0.4));
+    }
 
     .fb-content { grid-template-columns: 1fr; }
     .fb-section { border-right: none; }
