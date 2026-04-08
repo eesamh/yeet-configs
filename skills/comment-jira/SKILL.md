@@ -34,6 +34,15 @@ Accept the comment body from one of:
 - **A file path** — read the file content and use it as the comment body
 - **Interactive input** — if no content was provided, ask the human to type or paste the comment
 
+**Identity footer:** Always append the following footer to every comment posted by this skill, separated from the body by a blank line:
+
+```
+---
+_Posted by Farty Bobo_
+```
+
+If the comment is an update to an existing Farty Bobo comment (footer already present), replace the existing footer rather than appending a second one.
+
 Format the comment in Atlassian Document Format (ADF) if required by the API, or plain markdown if the connector handles conversion. Keep the comment concise — do not pad with filler.
 
 ### 4. Preview and Confirm
