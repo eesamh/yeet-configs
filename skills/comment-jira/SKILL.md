@@ -54,12 +54,7 @@ Do not post without explicit confirmation. If the human selects "edit", accept r
 
 ### 5. Post the Comment
 
-Use the Atlassian MCP connector. Discover available tools at runtime — do not assume specific tool names. Look for tools that:
-- Add a comment to a Jira issue
-- Fetch or read existing comments on a Jira issue
-- Update an existing comment by ID
-
-If the connector exposes a generic fetch/REST tool, use it with the appropriate Jira REST API endpoints (`/rest/api/3/issue/{issueId}/comment` for create, `/rest/api/3/issue/{issueId}/comment/{commentId}` for update).
+Use the Atlassian MCP connector's **"Add comment"** tool for new comments. For updating an existing comment, look for an update/edit comment tool in the connector; if none exists, fall back to the connector's generic fetch/REST tool with a PUT to `/rest/api/3/issue/{issueId}/comment/{commentId}`.
 
 On success, confirm to the caller: "Comment posted to `{ticket-id}`: `{comment-url}`"
 On failure, surface the full error and ask the human how to proceed — do not retry silently.
