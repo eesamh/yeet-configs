@@ -36,7 +36,7 @@ disable-model-invocation: false
    **Prerequisites & safety checks — run these before doing anything else in this step:**
    - If the ticket ID is `[NO-TICKET]` or no ticket ID is known, skip this step entirely.
    - Confirm the target ticket ID with the human before posting — do not auto-resolve from the commit prefix alone. Ask: "Should I post the Decision Log to `{ticket-id}`?"
-   - Use the Atlassian MCP connector (`mcp__claude_ai_Atlassian__addCommentToJiraIssue` to create, `mcp__claude_ai_Atlassian__fetchAtlassian` to read existing comments). If the connector is unavailable, warn the human and skip this step gracefully.
+   - Use the Atlassian MCP connector to post and read comments. Discover available tools at runtime — do not assume specific tool names. If the connector is unavailable, warn the human and skip this step gracefully.
    - Check the Jira project's visibility before posting. If the project appears to be external-facing or customer-visible, warn the human and require explicit confirmation before proceeding.
 
    **Decision sources — use only these, in order of preference:**
