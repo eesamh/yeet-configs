@@ -1,4 +1,4 @@
-# Claude Code Configs
+# farty-bobo
 
 Shared configuration files for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Clone this repo and symlink the files into `~/.claude/` to set up a new machine quickly.
 
@@ -22,7 +22,7 @@ Shared configuration files for [Claude Code](https://docs.anthropic.com/en/docs/
 1. **Clone the repo**
 
    ```sh
-   git clone <repo-url> ~/dev/claude-configs
+   git clone <repo-url> ~/dev/farty-bobo
    ```
 
 2. **Create the `~/.claude` directory** (if it doesn't exist)
@@ -36,7 +36,7 @@ Shared configuration files for [Claude Code](https://docs.anthropic.com/en/docs/
    ```sh
 
    # Adjust to fit your local setup
-   export REPO_DIRECTORY_PATH=~/dev/claude-configs
+   export REPO_DIRECTORY_PATH=~/dev/farty-bobo
 
    # Settings
    ln -sf "$REPO_DIRECTORY_PATH/settings.json" ~/.claude/settings.json
