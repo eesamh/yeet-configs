@@ -3,7 +3,7 @@ layout: default
 title: Farty Bobo
 ---
 
-<img src="logos/fartybobo_angry_mascot.svg" alt="Farty Bobo mascot" width="200" height="124" />
+<img src="{{ '/logos/fartybobo_angry_mascot.svg' | relative_url }}" alt="Farty Bobo mascot" width="200" height="124" />
 
 # Farty Bobo
 
