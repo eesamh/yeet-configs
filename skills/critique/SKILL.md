@@ -26,16 +26,21 @@ disable-model-invocation: false
 - Ignore code review revisions and proceed to next step.
 - Implement revisions. Use the original agent(s) to implement changes.
 
-5. Prepare, summarize the changes in the changed files. Always prefix commits with [{ticket-id}]: {summary of change}. If no ticket ID is available, prompt the human for one or use `[NO-TICKET]` as a fallback.
+5. **Branch safety check.** Run `git branch --show-current` and compare against the repo's default branch (typically `main` or `master`).
+   - If on the default branch: warn the human — "You are on `{branch}` (the default branch). Committing directly here is not recommended. Should I create a new branch first, or do you explicitly approve committing to `{branch}`?"
+   - Do not proceed to Step 6 until the human has either approved committing to the default branch explicitly or confirmed a new branch to use.
+   - If the human chooses a new branch: create it from the current HEAD (`git checkout -b {branch-name}`), then continue.
+
+6. Prepare, summarize the changes in the changed files. Always prefix commits with [{ticket-id}]: {summary of change}. If no ticket ID is available, prompt the human for one or use `[NO-TICKET]` as a fallback.
    - Do not stage temporary review or planning files (e.g. `review-*.md`, `plan-*.md`). Delete them after the review is complete.
    Permanent project docs (`README.md`, `SKILL.md`, `AGENTS.md`, etc.) should still be committed when changed.
-6. Commit and push. If the push fails due to pre-push hook errors, prompt the human for approval before using `git push --no-verify`. If `--no-verify` was used, record this in the Decision Log (Step 8) as a warning line.
+7. Commit and push. If the push fails due to pre-push hook errors, prompt the human for approval before using `git push --no-verify`. If `--no-verify` was used, record this in the Decision Log (Step 9) as a warning line.
 
-6a. **Open a pull request.** After a successful push, open a PR using `gh pr create` (or equivalent). Capture the PR URL. If the PR creation fails, skip Steps 7 and 8 and warn the human.
+7a. **Open a pull request.** After a successful push, open a PR using `gh pr create` (or equivalent). Capture the PR URL. If the PR creation fails, skip Steps 7 and 8 and warn the human.
 
-7. **Transition the Jira ticket to Review status.**
+8. **Transition the Jira ticket to Review status.**
 
-   Only proceed if Step 6 (push) and Step 6a (PR open) both completed successfully. Skip this step entirely if either failed.
+   Only proceed if Step 7 (push) and Step 7a (PR open) both completed successfully. Skip this step entirely if either failed.
 
    - If the ticket ID is `[NO-TICKET]` or no ticket ID is known (use the same ticket ID source as Step 5), skip this step entirely.
    - Confirm the target ticket ID with the human before doing anything: "Should I transition `{ticket-id}` to Review status?"
@@ -45,7 +50,7 @@ disable-model-invocation: false
    - Apply the transition using `transitionJiraIssue` (or equivalent discovered tool).
    - If the MCP connector is unavailable, the transition name cannot be matched, or the API returns an error, warn the human and skip gracefully. Do not retry automatically.
 
-8. **Post a Decision Log comment on the Jira ticket.**
+9. **Post a Decision Log comment on the Jira ticket.**
 
    **Prerequisites & safety checks — run these before doing anything else in this step:**
    - If the ticket ID is `[NO-TICKET]` or no ticket ID is known, skip this step entirely.
