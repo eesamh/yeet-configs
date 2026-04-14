@@ -162,9 +162,77 @@ Each agent evaluates:
 
 Do not manufacture findings to look thorough. If the code is good, say so.
 
-## Step 5 — Post inline comments
+## Step 5 — Draft review file and get human approval
 
-After collecting all agent outputs, post inline comments for each PR using `gh api`. Use `side: "RIGHT"` for all inline comments (the right side of the split diff — the new version). Only post comments for lines confirmed to exist in the diff.
+Before posting anything to GitHub, write a draft markdown file and present it to the user for review and editing.
+
+### Write the draft file
+
+Write all findings to `review-draft-{timestamp}.md` (e.g. `review-draft-2026-04-14T15-44.md`) in the current working directory. The file has two sections per PR: a **Changes Summary** and the **Proposed Comments**.
+
+File format:
+
+```markdown
+# Review Draft — {date}
+
+---
+
+## {owner}/{repo}#{number} — {title}
+
+**Author:** {login} | **Verdict:** APPROVE / REQUEST_CHANGES / COMMENT | **CI:** passing / failing / pending
+
+### Changes Summary
+
+<3–6 sentence plain-English description of what the PR actually does — not the PR description copy-pasted, but your own read of the diff. What files changed, what behavior changed, what was added or removed.>
+
+### Proposed Comments
+
+#### Inline Comments
+
+| File | Line | Severity | Comment |
+|------|------|----------|---------|
+| `path/to/file.ts` | 42 | BLOCKER | Farty Bobo says: ... |
+
+#### Top-Level Summary Comment
+
+> ## Farty Bobo's Code Review
+>
+> **Verdict:** ...
+>
+> ### Summary
+> ...
+>
+> ### Findings
+> ...
+>
+> ---
+> _Reviewed by Farty Bobo_
+
+---
+
+## Cross-PR Summary (posted on #{lowest-number})
+
+> ## Farty Bobo's Cross-PR Review — #123, #124
+> ...
+```
+
+Include every PR in the file, in order. Leave the cross-PR summary at the bottom.
+
+### Present and wait for approval
+
+Tell the user:
+
+> "Draft written to `{filename}`. Open it, make any edits you want — remove findings, soften wording, add context — then tell me to post when ready. Or say 'post as-is'."
+
+**Do not proceed to Step 6 until the user explicitly says to post.** This gate is not optional — the whole point is to let the human adjust before anything hits GitHub.
+
+### After approval
+
+Re-read the (possibly edited) draft file before posting — use its content as the source of truth for what gets posted, not the original agent outputs. Then delete the draft file after posting completes.
+
+## Step 6 — Post inline comments
+
+After human approval, post inline comments for each PR using `gh api`. Use `side: "RIGHT"` for all inline comments (the right side of the split diff — the new version). Only post comments for lines confirmed to exist in the diff. Use the content from the approved draft file — not the raw agent output.
 
 ```
 gh api repos/{owner}/{repo}/pulls/{number}/reviews \
@@ -179,9 +247,9 @@ gh api repos/{owner}/{repo}/pulls/{number}/reviews \
 
 Post inline comments for all PRs before writing the consolidated summary.
 
-## Step 6 — Post consolidated summary
+## Step 7 — Post consolidated summary
 
-After all inline comments are posted, post a **single top-level comment on each PR** with that PR's individual summary, followed by a **cross-PR summary comment** on the lowest-numbered PR (or the base PR for stacked work).
+After all inline comments are posted, post a **single top-level comment on each PR** with that PR's individual summary, followed by a **cross-PR summary comment** on the lowest-numbered PR (or the base PR for stacked work). Use the content from the approved draft file.
 
 ### Per-PR comment format
 
@@ -220,7 +288,7 @@ _Reviewed by Farty Bobo_
 
 Only include sections that have entries. Omit empty sections entirely.
 
-### Cross-PR summary format (posted once, on lowest-numbered PR)
+### Cross-PR summary format (posted once, on lowest-numbered PR — content from approved draft file)
 
 ```
 ## Farty Bobo's Cross-PR Review — <PR list>
@@ -255,7 +323,7 @@ Only include sections with content. Omit empty sections.
 - `REQUEST_CHANGES` — one or more BLOCKERs or HIGHs introduced by this PR
 - `COMMENT` — draft PR, questions only, or observations with no blocking concerns
 
-## Step 7 — Notify the user
+## Step 8 — Notify the user
 
 After posting all comments:
 
