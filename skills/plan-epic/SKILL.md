@@ -75,9 +75,20 @@ For each ticket (one at a time, in order):
    - If the human wants to skip a ticket, mark it as `deferred` in the Epic Context and proceed.
    - If `/plan-task` errors out, surface the error to the human and wait for instructions before continuing.
 
-### 4. Epic Summary
+### 4. Modularity Review (if applicable)
 
-After all tickets are planned, produce `plans/epic-summary.md`. For multi-repo epics, save to the `plans/` folder of the repo containing the majority of changes — note the path explicitly to the human.
+After all tickets are planned but **before** producing the epic summary, assess whether the epic as a whole introduces or restructures module boundaries across multiple tickets. If it does:
+
+1. Run `/modularity:review` against the affected repos, passing the Epic Context file and all plan file paths as input.
+2. `/modularity:review` will analyze coupling across the planned components using the Balanced Coupling model (integration strength, distance, volatility).
+3. If the review surfaces coupling imbalances or recommends restructuring module boundaries, present the findings to the human and ask whether to revise any individual ticket plans before finalizing.
+4. Record any modularity-driven decisions in the Epic Context file.
+
+Skip this step if the epic is purely bug fixes, configuration changes, or does not introduce new component boundaries.
+
+### 5. Epic Summary
+
+After all tickets are planned (and optionally modularity-reviewed), produce `plans/epic-summary.md`. For multi-repo epics, save to the `plans/` folder of the repo containing the majority of changes — note the path explicitly to the human.
 
 The summary must include:
 - A table: Ticket ID | Title | Plan file path | Status (planned / deferred) | Key decisions

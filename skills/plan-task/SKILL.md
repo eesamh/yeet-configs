@@ -58,7 +58,16 @@ The plan must include:
 - Out-of-scope items explicitly called out
 - Any visualizations (mermaid diagrams, etc.) that aid review
 
-### 6. Enrich for AWS/CDK (if applicable)
+### 6a. Modularity Design (if applicable)
+
+If the implementation plan introduces **new modules, services, or significant component boundaries** — or restructures existing ones — run `/modularity:design` to create a modular architecture before proceeding:
+
+- Pass the functional requirements, affected repos, and any domain context gathered in earlier steps.
+- `/modularity:design` will analyze the requirements, classify domain areas by business volatility, and produce a module design doc with integration contracts and coupling analysis.
+- Incorporate the module design output into the implementation plan (Step 5): add a "Module Architecture" section referencing the design doc and any coupling constraints it identified.
+- If the task is a straightforward bug fix, single-file change, or does not introduce new component boundaries, skip this step.
+
+### 6b. Enrich for AWS/CDK (if applicable)
 
 If the implementation plan involves cloud infrastructure, **or** if the repo contains AWS/CDK configuration files (`cdk.json`, `serverless.yml`, `*.tf`, AWS SDK imports), enrich the plan using the `deploy-on-aws` MCP tools:
 - `awsknowledge` — look up official AWS service docs, recommend services, retrieve SOPs

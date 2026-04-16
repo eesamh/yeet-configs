@@ -13,4 +13,7 @@ disable-model-invocation: false
   - spin up an agent
   - spin up a team of agents to implement the provided plan
 5. Create a todo list for each agent. Kick off the execution.
-6. Once the agent(s) are done, run `/critique` with the implementation plan and all impacted repos to ensure changes are reviewed, committed, and pushed.
+6. Once the agent(s) are done, assess whether the changes warrant a modularity review:
+   - If the diff touches **3+ modules/packages** or exceeds **500 changed lines**, run `/modularity:review` against the affected repos before proceeding to critique. Present coupling findings to the human and address any issues before committing.
+   - Otherwise, skip the modularity review.
+7. Run `/critique` with the implementation plan and all impacted repos to ensure changes are reviewed, committed, and pushed.

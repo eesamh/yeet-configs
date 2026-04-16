@@ -95,6 +95,12 @@
         "source": "github",
         "repo": "openai/codex-plugin-cc"
       }
+    },
+    "vladikk-modularity": {
+      "source": {
+        "source": "github",
+        "repo": "vladikk/modularity"
+      }
     }
   },
   "sandbox": {

@@ -18,6 +18,7 @@ disable-model-invocation: false
 
 - one generalist critic (good for simple tasks)
 - a team of critics who have expertise in the technology stacks being used and best security practices. The critics must create a markdown file to list their revisions sorted by severity (high first).
+- Modularity review: Run `/modularity:review` to analyze coupling across modules using the Balanced Coupling model. Best for changes that introduce or restructure component boundaries, touch multiple modules, or modify public APIs/contracts.
 - Codex review: Ask the human to run `/codex:review`
 - Manual review by the human.
 
