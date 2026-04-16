@@ -44,9 +44,32 @@ disable-model-invocation: false
 
    After the draft PR is open, wait for automated reviewers (bots, linters, CI) to post their feedback:
 
-   1. **Ask the human how long to wait.** Prompt: "How many minutes should I wait for bot reviews before proceeding? (default: 5)"
-      - Use the human's answer, or default to 5 minutes if they don't specify.
-      - Use `ScheduleWakeup` with the specified delay (converted to seconds) to set the timer. While waiting, inform the human: "Waiting {N} minutes for bot reviews on {PR_URL}..."
+   1. **Estimate the wait time** based on PR size and recent CI history:
+
+      a. **Measure the PR size:**
+         ```
+         gh pr diff {number} --patch | wc -l
+         ```
+         Classify: small (< 200 lines), medium (200–800 lines), large (> 800 lines).
+
+      b. **Sample recent CI run durations** from the last 5 completed workflow runs on the repo's default branch:
+         ```
+         gh run list --branch {default_branch} --status completed --limit 5 --json databaseId,updatedAt,createdAt
+         ```
+         For each run, compute `duration = updatedAt - createdAt` in minutes. Take the **median** as the baseline CI duration.
+
+      c. **Compute the wait estimate:**
+         - Start with the median CI duration from (b). If no runs are found, use 5 minutes as the fallback.
+         - Add a buffer for bot reviewers (linters, code scanners): +2 minutes for small PRs, +3 for medium, +5 for large.
+         - Cap the total at 15 minutes — if the estimate exceeds this, use 15 minutes. Anything longer and the human should be deciding.
+         - Floor at 3 minutes — bots need at least this long to spin up.
+
+      d. **Announce the estimate:** "Based on recent CI runs (median: {N}min) and PR size ({size}), waiting {estimate} minutes for bot reviews on {PR_URL}. Say 'skip' to proceed immediately or give me a different number."
+         - If the human responds with a number, use that instead.
+         - If the human says 'skip', proceed immediately to step 2.
+         - Otherwise, use the computed estimate.
+
+      e. Use `ScheduleWakeup` with the final delay (converted to seconds) to set the timer.
 
    2. **When the timer fires, run the feedback loop:**
       - Invoke `/address-pr-comments` — this reads all unresolved comments (including bot comments) and addresses actionable ones. If code changes are made, `/address-pr-comments` will internally invoke `/critique` to commit and push fixes.
