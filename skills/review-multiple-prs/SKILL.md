@@ -254,7 +254,9 @@ File format:
 
 ## {owner}/{repo}#{number} — {title}
 
-**Author:** {login} | **Verdict:** APPROVE / REQUEST_CHANGES / COMMENT | **CI:** passing / failing / pending
+**Author:** {login} | **CI:** passing / failing / pending
+
+**Review Event:** `APPROVE` / `REQUEST_CHANGES` / `COMMENT` ← _edit this to control the formal GitHub review event submitted for this PR_
 
 ### Changes Summary
 
@@ -274,27 +276,19 @@ File format:
 |------|------|----------|---------|
 | `path/to/file.ts` | 42 | BLOCKER | Farty Bobo says: ... |
 
-#### Top-Level Summary Comment
-
-> ## Farty Bobo's Code Review
->
-> **Verdict:** ...
->
-> ### Summary
-> ...
->
-> ### Findings
-> ...
->
-> ---
-> _Reviewed by Farty Bobo_
-
 ---
 
 ## Cross-PR Summary (for human reviewer only — NOT posted to GitHub)
 
-> ## Farty Bobo's Cross-PR Review — #123, #124
-> ...
+> **Relationship:** Stacked / Parallel / Batch
+> **Overall:** ALL APPROVE / MIXED / ALL REQUEST_CHANGES
+>
+> | PR | Title | Review Event | Blockers | Highs |
+> |----|-------|-------------|----------|-------|
+> | #123 | ... | APPROVE | 0 | 1 |
+> | #124 | ... | REQUEST_CHANGES | 1 | 0 |
+>
+> **Integration Concerns:** ...
 ```
 
 Include every PR in the file, in order. Leave the cross-PR summary at the bottom.
@@ -303,7 +297,7 @@ Include every PR in the file, in order. Leave the cross-PR summary at the bottom
 
 Tell the user:
 
-> "Draft written to `{filename}`. Open it, make any edits you want — remove findings, soften wording, add context — then tell me to post when ready. Or say 'post as-is'."
+> "Draft written to `{filename}`. Open it, make any edits you want — remove findings, soften wording, add context. **The `Review Event` field on each PR controls the formal GitHub review action (APPROVE / REQUEST_CHANGES / COMMENT) — change it if you disagree with my recommendation.** Tell me to post when ready, or say 'post as-is'."
 
 **Do not proceed to Step 6 until the user explicitly says to post.** This gate is not optional — the whole point is to let the human adjust before anything hits GitHub.
 
@@ -311,74 +305,56 @@ Tell the user:
 
 Re-read the (possibly edited) draft file before posting — use its content as the source of truth for what gets posted, not the original agent outputs. Then delete the draft file after posting completes.
 
-## Step 6 — Post inline comments
+## Step 6 — Post inline comments and submit review
 
-After human approval, post inline comments for each PR using `gh api`. Use `side: "RIGHT"` for all inline comments (the right side of the split diff — the new version). Only post comments for lines confirmed to exist in the diff. Use the content from the approved draft file — not the raw agent output.
+After human approval, re-read the draft file. For each PR:
+
+1. **Parse the `Review Event` field** from the draft file header. Valid values: `APPROVE`, `REQUEST_CHANGES`, `COMMENT`. The human may have changed this from the agent's original recommendation — **always use the value in the file, not the agent's original verdict.**
+
+2. **Post inline comments with the review event** using `gh api`. Use `side: "RIGHT"` for all inline comments. Only post comments for lines confirmed to exist in the diff. Use the content from the approved draft file — not the raw agent output.
 
 ```
 gh api repos/{owner}/{repo}/pulls/{number}/reviews \
   --method POST \
   --field body="" \
-  --field event="COMMENT" \
+  --field event="{REVIEW_EVENT}" \
   --field "comments[][path]=path/to/file.ts" \
   --field "comments[][line]=42" \
   --field "comments[][side]=RIGHT" \
   --field "comments[][body]=Farty Bobo says: <finding>"
 ```
 
-Post inline comments for all PRs before writing the consolidated summary.
+Where `{REVIEW_EVENT}` is the value read from the draft file's `Review Event` field for that PR (`APPROVE`, `REQUEST_CHANGES`, or `COMMENT`).
 
-## Step 7 — Summary delivery
-
-**Do NOT post any summary comments to GitHub PRs.** No per-PR summary comment. No cross-PR summary comment. Summary comments are noisy and redundant — the inline comments already convey the findings where they matter (on the code).
-
-All summary information (per-PR verdicts, cross-PR analysis) lives in:
-1. The **draft review file** (Step 5) — for the human reviewer to read before approving
-2. The **conversation** (Step 8) — relayed directly to the user after posting
-
-### Cross-PR summary format (draft file only — never posted to GitHub)
+3. **If a PR has no inline comments** but the review event is `APPROVE` or `REQUEST_CHANGES`, submit the review without comments:
 
 ```
-## Farty Bobo's Cross-PR Review — <PR list>
-
-### Relationship
-<Stacked / Parallel / Batch — and why>
-
-### Overall Verdict
-<One of: ALL APPROVE / MIXED / ALL REQUEST_CHANGES>
-
-| PR | Title | Verdict | Blockers | Highs |
-|----|-------|---------|----------|-------|
-| #123 | ... | APPROVE | 0 | 1 |
-| #124 | ... | REQUEST_CHANGES | 1 | 0 |
-
-### Integration Concerns _(if applicable)_
-<Cross-PR issues that don't belong to a single PR — naming conflicts, shared state, ordering dependencies, duplicated logic across PRs>
-
-### Merge Order _(if applicable — stacked or ordered PRs only)_
-1. #123 — merge first
-2. #124 — depends on #123
-
----
-_Reviewed by Farty Bobo_
+gh api repos/{owner}/{repo}/pulls/{number}/reviews \
+  --method POST \
+  --field body="Reviewed by Farty Bobo" \
+  --field event="{REVIEW_EVENT}"
 ```
 
-Only include sections with content. Omit empty sections.
+Post reviews for all PRs.
 
-### Verdict rules (per PR)
+## Step 7 — Review event rules
+
+The agent populates the `Review Event` field in the draft file as its **initial recommendation**. The human can override it before posting. These are the rules for the agent's initial recommendation:
 
 - `APPROVE` — no BLOCKERs or HIGHs (including unresolved prior concerns with original severity BLOCKER or HIGH), CI passing (or failures pre-existing on base)
 - `REQUEST_CHANGES` — one or more BLOCKERs or HIGHs introduced by this PR, OR one or more unresolved prior concerns with original severity BLOCKER or HIGH
-- `COMMENT` — draft PR (overrides all other verdicts — see below), questions only, or observations with no blocking concerns
+- `COMMENT` — draft PR (overrides all other events — see below), questions only, or observations with no blocking concerns
 
-**Draft PR precedence:** if `is_draft: true`, the verdict is always `COMMENT` regardless of unresolved prior concerns. Prior discussions are still analyzed and surfaced in the output — the draft status overrides the verdict, not the analysis.
+**Draft PR precedence:** if `is_draft: true`, the review event is always `COMMENT` regardless of unresolved prior concerns. Prior discussions are still analyzed and surfaced in the output — the draft status overrides the event, not the analysis.
+
+**Human override:** Whatever value the human leaves in the `Review Event` field when they approve the draft is what gets submitted to the GitHub API. The agent's recommendation is just a starting point.
 
 ## Step 8 — Notify the user
 
-After posting all per-PR comments (no cross-PR summary is posted to GitHub):
+After posting all reviews:
 
-- Report the per-PR verdicts and total finding counts.
-- Present the cross-PR summary directly to the user in the conversation (it was already in the draft file; now relay the key points).
+- Report the per-PR review events submitted (APPROVE / REQUEST_CHANGES / COMMENT) and total finding counts.
+- Present the cross-PR summary directly to the user in the conversation (it was already in the draft file; relay the key points).
 - Call out any cross-PR integration concerns surfaced.
 - If CI failures were introduced by any PR, name the PR and suggest `/resolve-ci-failures`.
 - If any PRs have BLOCKERs or HIGHs, list the top concerns briefly.
