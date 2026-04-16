@@ -291,7 +291,7 @@ File format:
 
 ---
 
-## Cross-PR Summary (posted on #{lowest-number})
+## Cross-PR Summary (for human reviewer only — NOT posted to GitHub)
 
 > ## Farty Bobo's Cross-PR Review — #123, #124
 > ...
@@ -330,7 +330,9 @@ Post inline comments for all PRs before writing the consolidated summary.
 
 ## Step 7 — Post consolidated summary
 
-After all inline comments are posted, post a **single top-level comment on each PR** with that PR's individual summary, followed by a **cross-PR summary comment** on the lowest-numbered PR (or the base PR for stacked work). Use the content from the approved draft file.
+After all inline comments are posted, post a **single top-level comment on each PR** with that PR's individual summary. Use the content from the approved draft file.
+
+**Do NOT post the cross-PR summary to any PR.** The cross-PR summary exists only in the draft review file (Step 5) for the human reviewer's benefit. It must never be posted as a GitHub comment — it references PRs across different repos and authors who have no context for it, and it creates noise on unrelated PRs.
 
 ### Per-PR comment format
 
@@ -372,7 +374,7 @@ _Reviewed by Farty Bobo_
 
 Only include sections that have entries. Omit empty sections entirely.
 
-### Cross-PR summary format (posted once, on lowest-numbered PR — content from approved draft file)
+### Cross-PR summary format (draft file only — never posted to GitHub)
 
 ```
 ## Farty Bobo's Cross-PR Review — <PR list>
@@ -411,9 +413,10 @@ Only include sections with content. Omit empty sections.
 
 ## Step 8 — Notify the user
 
-After posting all comments:
+After posting all per-PR comments (no cross-PR summary is posted to GitHub):
 
 - Report the per-PR verdicts and total finding counts.
+- Present the cross-PR summary directly to the user in the conversation (it was already in the draft file; now relay the key points).
 - Call out any cross-PR integration concerns surfaced.
 - If CI failures were introduced by any PR, name the PR and suggest `/resolve-ci-failures`.
 - If any PRs have BLOCKERs or HIGHs, list the top concerns briefly.
