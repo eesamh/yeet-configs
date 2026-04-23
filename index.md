@@ -379,7 +379,7 @@ image: /logos/fartybobo_angry_mascot_1360.png
     <div class="fb-mascot-wrap">
       <img
         class="fb-mascot"
-        src="{{ '/logos/fartybobo_angry_mascot.svg' | relative_url }}"
+        src="{{ '/logos/fartybobo_straitjacket.svg' | relative_url }}"
         alt="Farty Bobo mascot"
       />
     </div>
