@@ -119,6 +119,9 @@
     "enabled": true,
     "failIfUnavailable": false
   },
+  "attribution": {
+    "commit": "Co-Authored-By: claude <209825114+claude[bot]@users.noreply.github.com>"
+  },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
   "skipAutoPermissionPrompt": true,
