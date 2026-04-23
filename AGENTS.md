@@ -86,3 +86,7 @@ Quit and reopen Claude Desktop for the new MCP server configuration to take effe
 Open Claude Desktop → Settings → Developer → MCP Servers.
 The new server should appear with a green status indicator.
 If it shows red/error, check Console.app for crash logs from the wrapper script.
+
+## Committing rules on this repo
+
+This is a solo project repo that does not require PRs or reviews from other humans or other agents. It is okay to merge to main.
