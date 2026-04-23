@@ -74,10 +74,6 @@ Shared configuration files for Claude Code. Clone this repo and symlink the file
 - Edit files in this repo, then `git commit` and `git push` — changes propagate to every machine via `git pull`.
 - To override settings on a single machine without affecting the repo, remove the symlink for that file and create a local copy instead.
 
-## TODOs
-
-- https://github.com/simonw/claude-code-transcripts
-
 ## Useful Links
 
 - [Claude Code Hooks](https://code.claude.com/docs/en/hooks)
@@ -99,3 +95,8 @@ Use the `/add-mcp-server` skill to add an MCP server to any project. It will:
 | **dbt-mcp** | `uvx dbt-mcp` | Requires dbt installed via pipx. Env vars: `DBT_PROJECT_DIR`, `DBT_PATH`, plus project-specific DB credentials. |
 | **redshift** | `uvx awslabs.redshift-mcp-server` | Env vars: `AWS_PROFILE`, `AWS_REGION`. |
 | **Langfuse** | HTTP/SSE — `https://us.cloud.langfuse.com/api/public/mcp` | Auth header: `Authorization: Basic ${LANGFUSE_BASE_64_TOKEN}`. See [docs](https://langfuse.com/docs/api-and-data-platform/features/mcp-server). Alternatively, use [langfuse-cli](https://github.com/langfuse/langfuse-cli) as a skill: `npx langfuse-cli get-skill`. |
+
+
+## TODOs
+
+- https://github.com/simonw/claude-code-transcripts
