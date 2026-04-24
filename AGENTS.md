@@ -93,22 +93,14 @@ This repo is a Claude Code plugin marketplace. Anyone can install skills, hooks,
 
 ### How to add the plugin
 
-Add to `~/.claude/settings.json` (global) or `.claude/settings.json` (project-scoped):
+Run these two commands in Claude Code:
 
-```json
-{
-  "extraKnownMarketplaces": {
-    "farty-bobo": {
-      "source": { "source": "github", "repo": "fartybobo/farty-bobo" }
-    }
-  },
-  "enabledPlugins": {
-    "farty-bobo@farty-bobo": true
-  }
-}
+```
+/plugin marketplace add fartybobo/farty-bobo
+/plugin install farty-bobo@farty-bobo
 ```
 
-Then run `/farty-bobo:install`. The skill will:
+Restart Claude Code, then run `/farty-bobo:install`. The skill will:
 1. Fetch the live catalog of skills, hooks, and commands from this repo via `gh api`
 2. Present a menu — the user picks all or a named subset
 3. Download selected items to `~/.claude/skills/`, `~/.claude/hooks/`, `~/.claude/commands/`

@@ -104,22 +104,14 @@ Use the `/add-mcp-server` skill to add an MCP server to any project. It will:
 
 Don't want to clone the whole thing? Use the `farty-bobo` plugin to selectively install any skill, hook, or command onto your machine.
 
-Add to your `~/.claude/settings.json`:
+Run these two commands in Claude Code:
 
-```json
-{
-  "extraKnownMarketplaces": {
-    "farty-bobo": {
-      "source": { "source": "github", "repo": "fartybobo/farty-bobo" }
-    }
-  },
-  "enabledPlugins": {
-    "farty-bobo@farty-bobo": true
-  }
-}
+```
+/plugin marketplace add fartybobo/farty-bobo
+/plugin install farty-bobo@farty-bobo
 ```
 
-Then restart Claude Code and run:
+Restart Claude Code, then run:
 
 ```
 /farty-bobo:install
