@@ -89,7 +89,7 @@ If it shows red/error, check Console.app for crash logs from the wrapper script.
 
 ## Installing Skills Without Cloning This Repo
 
-The `plugins/farty-bobo/` directory contains a Claude Code plugin that lets anyone install skills, hooks, or commands from this repo à la carte — without forking or cloning the whole thing.
+This repo is a Claude Code plugin marketplace. Anyone can install skills, hooks, or commands from it à la carte — without forking or cloning the whole thing.
 
 ### How to add the plugin
 
@@ -97,9 +97,14 @@ Add to `~/.claude/settings.json` (global) or `.claude/settings.json` (project-sc
 
 ```json
 {
-  "plugins": [
-    "github:fartybobo/farty-bobo/plugins/farty-bobo"
-  ]
+  "extraKnownMarketplaces": {
+    "farty-bobo": {
+      "source": { "source": "github", "repo": "fartybobo/farty-bobo" }
+    }
+  },
+  "enabledPlugins": {
+    "farty-bobo@farty-bobo": true
+  }
 }
 ```
 

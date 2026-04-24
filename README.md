@@ -108,13 +108,18 @@ Add to your `~/.claude/settings.json`:
 
 ```json
 {
-  "plugins": [
-    "github:fartybobo/farty-bobo/plugins/farty-bobo"
-  ]
+  "extraKnownMarketplaces": {
+    "farty-bobo": {
+      "source": { "source": "github", "repo": "fartybobo/farty-bobo" }
+    }
+  },
+  "enabledPlugins": {
+    "farty-bobo@farty-bobo": true
+  }
 }
 ```
 
-Then run:
+Then restart Claude Code and run:
 
 ```
 /farty-bobo:install

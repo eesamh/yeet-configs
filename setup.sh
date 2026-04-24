@@ -61,7 +61,6 @@ symlink_file "$REPO_DIR/CLAUDE.md"      "$CLAUDE_DIR/CLAUDE.md"
 symlink_dir  "$REPO_DIR/commands"       "$CLAUDE_DIR/commands"
 symlink_dir  "$REPO_DIR/hooks"          "$CLAUDE_DIR/hooks"
 symlink_dir  "$REPO_DIR/skills"         "$CLAUDE_DIR/skills"
-symlink_dir  "$REPO_DIR/plugins"        "$CLAUDE_DIR/plugins"
 
 symlink_file "$REPO_DIR/claude-desktop/mcp-versions.env" "$CLAUDE_DIR/mcp-versions.env"
 symlink_file "$REPO_DIR/.mcp.json"      "$CLAUDE_DIR/.mcp.json"
