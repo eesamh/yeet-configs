@@ -23,7 +23,7 @@ Run `gh auth status`. If unauthenticated, tell the user and stop — do not atte
   - **Stacked PRs** (each targets the previous branch): review them in order, treating each diff as a layer on top of the previous. Note cross-PR issues explicitly.
   - **Parallel PRs** (same feature, split by concern): review each independently, then write a combined summary that calls out any integration concerns.
   - **Unrelated PRs**: review each fully and independently. Produce a separate summary per PR.
-  State your interpretation to the user before proceeding.
+    State your interpretation to the user before proceeding.
 
 ## Step 2 — Gather context
 
@@ -40,7 +40,7 @@ For each PR:
 
 Before forming opinions:
 
-- Re-read the PR description and any linked ticket. Understand *what* the author was trying to accomplish and *why*.
+- Re-read the PR description and any linked ticket. Understand _what_ the author was trying to accomplish and _why_.
 - Identify the core change (the essential logic) vs. scaffolding (plumbing, tests, config).
 - Do not speculate about intent. If a behavior could be intentional or a bug, use a QUESTION finding to ask before calling it wrong.
 
@@ -49,31 +49,37 @@ Before forming opinions:
 Evaluate the code across these dimensions:
 
 ### Correctness
+
 - Does the code do what the PR description says it does?
 - Are there off-by-one errors, missing null checks, or edge cases not handled?
 - Does it handle error paths?
 
 ### Security
+
 - Check for OWASP Top 10 issues: injection, broken auth, insecure deserialization, XSS, etc.
 - Are secrets hardcoded? Are inputs validated at system boundaries?
 - Does the code follow least-privilege principles?
 
 ### Design & Simplicity
+
 - Is the abstraction level appropriate? Watch for over-engineering and premature abstraction.
 - Are there unnecessary layers of indirection?
 - Could any part be deleted and the behavior remain the same?
 
 ### Readability & Maintainability
+
 - Are variable and function names clear?
 - Is complex logic commented where the intent isn't obvious?
 - Is there dead code, commented-out blocks, or debug artifacts left in?
 
 ### Test Coverage
+
 - Are there tests for the new behavior?
 - Do existing tests still make sense? Are mocks hiding real integration issues?
 - Are edge cases covered?
 
 ### Performance (flag only if relevant)
+
 - Are there obvious N+1 queries, unnecessary loops, or unindexed DB calls?
 - Are large payloads or heavy computations done in request paths?
 
@@ -81,14 +87,14 @@ Evaluate the code across these dimensions:
 
 Assign each finding a severity:
 
-| Level | Meaning |
-|-------|---------|
-| **BLOCKER** | Must be fixed before merge. Correctness bug, security vuln, broken contract, or CI failure introduced by this PR. |
-| **HIGH** | Serious design or reliability issue. Should be fixed; needs discussion if deferred. |
-| **MEDIUM** | Real improvement but not blocking. Author should address or explicitly accept the risk. |
-| **LOW / NIT** | Style, naming, minor cleanup. Optional. Don't block merge over these. |
-| **QUESTION** | Unclear intent — ask for clarification before judging. |
-| **PRAISE** | Something done especially well. Say it. |
+| Level         | Meaning                                                                                                           |
+| ------------- | ----------------------------------------------------------------------------------------------------------------- |
+| **BLOCKER**   | Must be fixed before merge. Correctness bug, security vuln, broken contract, or CI failure introduced by this PR. |
+| **HIGH**      | Serious design or reliability issue. Should be fixed; needs discussion if deferred.                               |
+| **MEDIUM**    | Real improvement but not blocking. Author should address or explicitly accept the risk.                           |
+| **LOW / NIT** | Style, naming, minor cleanup. Optional. Don't block merge over these.                                             |
+| **QUESTION**  | Unclear intent — ask for clarification before judging.                                                            |
+| **PRAISE**    | Something done especially well. Say it.                                                                           |
 
 Do not manufacture findings to look thorough. If the code is good, say so.
 
@@ -97,6 +103,7 @@ Do not manufacture findings to look thorough. If the code is good, say so.
 ### Inline comments
 
 True inline comments (anchored to a file and line) require either:
+
 - The **GitHub MCP** if available — use it to post line-level review comments.
 - Or `gh api` directly:
   ```
@@ -106,10 +113,10 @@ True inline comments (anchored to a file and line) require either:
     --field event="COMMENT" \
     --field "comments[][path]=path/to/file.ts" \
     --field "comments[][line]=42" \
-    --field "comments[][body]=Gossip Girl says: <finding>"
+    --field "comments[][body]=Gossip Girl here: <finding>"
   ```
 
-Each inline comment body must open with **"Gossip Girl says:"** so the author knows who left it.
+Each inline comment body must open with **"Gossip Girl here:"** so the author knows who left it. And end the comment with _"xoxo, Gossip Girl"_.
 
 If neither the GitHub MCP nor `gh api` inline posting is feasible, fall back to referencing `file.ts:42` inline in the consolidated summary instead — do not post top-level comment blobs pretending they are inline.
 
