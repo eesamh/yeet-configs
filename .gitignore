@@ -211,3 +211,8 @@ __marimo__/
 
 # Generated rotation scripts
 rotate-aws-keys.sh
+# Local machine-specific Claude Code settings — see settings.json.sample for the
+# shared baseline. setup.sh bootstraps settings.json from the sample on a fresh
+# machine; this file then accumulates local-only config (plugin op configs,
+# org-specific detail) that should never be committed.
+settings.json

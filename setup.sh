@@ -56,7 +56,6 @@ symlink_dir() {
   ok "$(basename "$dst")/ → $src"
 }
 
-symlink_file "$REPO_DIR/settings.json"  "$CLAUDE_DIR/settings.json"
 symlink_file "$REPO_DIR/CLAUDE.md"      "$CLAUDE_DIR/CLAUDE.md"
 symlink_dir  "$REPO_DIR/commands"       "$CLAUDE_DIR/commands"
 symlink_dir  "$REPO_DIR/hooks"          "$CLAUDE_DIR/hooks"
@@ -77,6 +76,29 @@ if [[ "$OSTYPE" == darwin* ]]; then
   mkdir -p "$CLAUDE_DESKTOP_DIR"
   symlink_file "$REPO_DIR/claude-desktop/claude_desktop_config.json" \
     "$CLAUDE_DESKTOP_DIR/claude_desktop_config.json"
+fi
+
+# ── settings.json setup ──────────────────────────────────────────
+# settings.json is gitignored (it accumulates local/org-specific config,
+# e.g. plugin op configs) — settings.json.sample is the shared, redacted
+# baseline actually tracked in this repo.
+SETTINGS_SRC="$REPO_DIR/settings.json"
+SETTINGS_DST="$CLAUDE_DIR/settings.json"
+
+if $LINKS_ONLY; then
+  if [[ -f "$SETTINGS_SRC" ]]; then
+    ln -sf "$SETTINGS_SRC" "$SETTINGS_DST"
+  fi
+else
+  if [[ ! -f "$SETTINGS_SRC" ]]; then
+    if [[ -f "$REPO_DIR/settings.json.sample" ]]; then
+      cp "$REPO_DIR/settings.json.sample" "$SETTINGS_SRC"
+    else
+      echo '{}' > "$SETTINGS_SRC"
+    fi
+  fi
+  ln -sf "$SETTINGS_SRC" "$SETTINGS_DST"
+  ok "settings.json → $SETTINGS_SRC"
 fi
 
 # ── .env setup ──────────────────────────────────────────────────
