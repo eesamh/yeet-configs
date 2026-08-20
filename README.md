@@ -1,3 +1,9 @@
+# ⚠️ Archived — moved to gossip-girl-tips
+
+**This repo no longer houses my Claude Code configs.** It started as a fork of [farty-bobo](https://github.com/Luney-Industries/farty-bobo) and has since diverged into something fully personal — active development now lives at **[eesamh/gossip-girl-tips](https://github.com/eesamh/gossip-girl-tips)**. This repo is kept around for history only; nothing here is maintained.
+
+---
+
 # Farty Bobo
 
 > Opinionated [Claude Code](https://docs.anthropic.com/en/docs/claude-code) configuration that actually works. Custom skills, hooks, settings, and MCP servers — clone it, symlink it, stop suffering.
